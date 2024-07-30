@@ -1,5 +1,5 @@
 import { Button, Form, Input, notification } from 'antd';
-import { loginAPI } from '../utils/api';
+import { loginApi } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
@@ -7,7 +7,7 @@ const LoginPage = () => {
   const onFinish = async (values) => {
     const {email, password} = values
 
-    const res = await loginAPI(email, password)
+    const res = await loginApi(email, password)
 
     if(res && res.EC === 0) {
       localStorage.setItem("access_token", res.access_token)
