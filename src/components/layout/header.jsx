@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import {  MailOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
 import { Menu } from 'antd'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const Header = () => {
+
+  const navigate = useNavigate()
   const items = [
     {
       label: <Link to={"/"}>Home Page</Link>,
@@ -22,11 +24,15 @@ const Header = () => {
       icon: <SettingOutlined />,
       children: [
         {
-          label: 'Log in',
+          label: <Link to={"/login"}>Log in</Link>,
           key: 'login',
         },
         {
-          label: 'log out',
+          label: <span onClick={() => {
+            localStorage.clear("access-token")
+            setCurrent("home")
+            navigate("/")
+          }}>Log out</span>,
           key: 'logout',
         },
       ],
