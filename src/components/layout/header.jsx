@@ -1,40 +1,50 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import {  MailOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
 import { Menu } from 'antd'
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/auth.context';
 
 
 const Header = () => {
 
   const navigate = useNavigate()
+  const { auth, setAuth } = useContext(AuthContext)
+  console.log('🚀 ~ Header ~ auth:', auth)
   const items = [
     {
       label: <Link to={"/"}>Home Page</Link>,
       key: 'home',
       icon: <MailOutlined />,
     },
-    {
+    ...(auth.isAuthenticated ? [{
       label: <Link to={"/user"}>Users</Link>,
       key: 'user',
       icon: <UserOutlined />,
-    },
+    }] : []),
+
     {
-      label: 'Welcome albert',
+      label: `Welcome ${auth?.user?.name}`,
       key: 'SubMenu',
       icon: <SettingOutlined />,
       children: [
-        {
-          label: <Link to={"/login"}>Log in</Link>,
-          key: 'login',
-        },
-        {
+        ...(auth.isAuthenticated ? [{
           label: <span onClick={() => {
             localStorage.clear("access-token")
             setCurrent("home")
+            setAuth({
+              isAuthenticated: false,
+              user: {
+                email: "",
+                name: ""
+              }
+            })
             navigate("/")
           }}>Log out</span>,
           key: 'logout',
-        },
+        },] : [{
+          label: <Link to={"/login"}>Log in</Link>,
+          key: 'login',
+        },]),
       ],
     },
   ]
